@@ -1,0 +1,188 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SkillMap</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+  <style>
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 50;
+    }
+    .modal-content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      width: 90%;
+      max-width: 500px;
+    }
+  </style>
+</head>
+<body class="font-sans bg-gray-100">
+  <div class="flex flex-col min-h-screen">
+    <header class="bg-white p-4 shadow-md text-center">
+      <h1 class="text-4xl font-bold text-blue-600">SkillMap</h1>
+      <p class="text-lg text-gray-600 italic">Your Roadmap to Mastery</p>
+    </header>
+
+    <div class="flex flex-1">
+      <aside class="w-64 bg-gray-800 text-white p-4 flex flex-col justify-between">
+        <div>
+          <button id="newRoadmapBtn" class="w-full text-left p-2 mb-2 bg-blue-600 hover:bg-blue-700 text-white rounded flex items-center">
+            <i class='bx bx-plus bx-sm mr-2'></i> New Roadmap
+          </button>
+          <button id="aboutBtn" class="w-full text-left p-2 mb-2 hover:bg-gray-700 rounded flex items-center">
+            <i class='bx bx-info-circle bx-sm mr-2'></i> About
+          </button>
+          <button id="contactBtn" class="w-full text-left p-2 hover:bg-gray-700 rounded flex items-center">
+            <i class='bx bx-envelope bx-sm mr-2'></i> Contact
+          </button>
+        </div>
+        <div class="mt-auto text-center text-gray-400">
+          <span class="text-lg">SkillMap © 2025</span>
+          <div class="h-2"></div> <!-- Reduced spacer -->
+          <span class="text-sm">All Rights Reserved</span>
+        </div>
+      </aside>
+
+      <main class="flex-1 p-6">
+        <form id="roadmapForm" class="bg-white p-6 rounded shadow-md">
+          <div class="mb-4">
+            <textarea id="prompt" class="w-full p-2 border rounded" placeholder="Describe the skill(s) and roadmap you want..." rows="4"></textarea>
+          </div>
+          <div class="grid grid-cols-2 gap-4 mb-4">
+            <select id="timeframe" class="p-2 border rounded">
+              <option value="7 days">7 days</option>
+              <option value="1 month">1 month</option>
+              <option value="2 months">2 months</option>
+              <option value="3 months">3 months</option>
+              <option value="6 months">6 months</option>
+              <option value="1 year">1 year</option>
+            </select>
+            <select id="skillLevel" class="p-2 border rounded">
+              <option value="Beginner">Beginner</option>
+              <option value="Intermediate">Intermediate</option>
+              <option value="Advanced">Advanced</option>
+              <option value="Zero to Hero">Zero to Hero</option>
+            </select>
+            <select id="resources" class="p-2 border rounded">
+              <option value="Free">Free</option>
+              <option value="YouTube">YouTube</option>
+              <option value="Affordable">Affordable</option>
+              <option value="Premium">Premium</option>
+            </select>
+            <select id="schedule" class="p-2 border rounded">
+              <option value="Daily Tasks">Daily Tasks</option>
+              <option value="Weekly Milestones">Weekly Milestones</option>
+            </select>
+            <select id="style" class="p-2 border rounded">
+              <option value="Project-Based">Project-Based</option>
+              <option value="Theory-Heavy">Theory-Heavy</option>
+              <option value="Mixed">Mixed</option>
+            </select>
+            <select id="goals" class="p-2 border rounded">
+              <option value="Job">Job</option>
+              <option value="School">School</option>
+              <option value="Portfolio">Portfolio</option>
+              <option value="Certification">Certification</option>
+              <option value="Brand Creation or Growth">Brand Creation or Growth</option>
+              <option value="Product Creation or Launch">Product Creation or Launch</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <button id="createRoadmapBtn" type="submit" class="bg-blue-600 text-white p-2 rounded hover:bg-blue-700 flex items-center justify-center">
+            <i class='bx bx-rocket bx-sm mr-2'></i> Create Roadmap
+          </button>
+        </form>
+
+        <div id="aboutModal" class="modal">
+          <div class="modal-content">
+            <div class="flex justify-end">
+              <button id="closeAboutModal" class="text-gray-500 hover:text-gray-700">&times;</button>
+            </div>
+            <h2 class="text-xl font-bold">About</h2>
+            <p>The app and the Orion Tech Company</p>
+          </div>
+        </div>
+
+        <div id="contactModal" class="modal">
+          <div class="modal-content">
+            <div class="flex justify-end">
+              <button id="closeContactModal" class="text-gray-500 hover:text-gray-700">&times;</button>
+            </div>
+            <h2 class="text-xl font-bold">Contact</h2>
+            <form id="contactForm" class="mt-4">
+              <input type="text" class="w-full p-2 mb-2 border rounded" placeholder="Name" required>
+              <input type="email" class="w-full p-2 mb-2 border rounded" placeholder="Email" required>
+              <textarea class="w-full p-2 border rounded" placeholder="Message" rows="4" required></textarea>
+              <button type="submit" class="bg-blue-600 text-white p-2 rounded hover:bg-blue-700 mt-2">Send</button>
+            </form>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('newRoadmapBtn').addEventListener('click', () => {
+      document.getElementById('roadmapForm').reset();
+      window.location.reload();
+    });
+
+    document.getElementById('aboutBtn').addEventListener('click', () => {
+      document.getElementById('aboutModal').style.display = 'block';
+    });
+
+    document.getElementById('contactBtn').addEventListener('click', () => {
+      document.getElementById('contactModal').style.display = 'block';
+    });
+
+    [document.getElementById('closeAboutModal'), document.getElementById('closeContactModal')].forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.getElementById('aboutModal').style.display = 'none';
+        document.getElementById('contactModal').style.display = 'none';
+      });
+    });
+
+    window.addEventListener('click', (e) => {
+      if (e.target.classList.contains('modal')) {
+        e.target.style.display = 'none';
+      }
+    });
+
+    document.getElementById('createRoadmapBtn').addEventListener('click', (e) => {
+      e.preventDefault();
+      const formData = {
+        prompt: document.getElementById('prompt').value,
+        timeframe: document.getElementById('timeframe').value,
+        skillLevel: document.getElementById('skillLevel').value,
+        resources: document.getElementById('resources').value,
+        schedule: document.getElementById('schedule').value,
+        style: document.getElementById('style').value,
+        goals: document.getElementById('goals').value
+      };
+      fetch('https://hook.us2.make.com/r2v3q8qa5cnkcr0mwsoc557z3dnxfxqk', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      }).then(response => {
+        if (response.ok) {
+          document.getElementById('roadmapForm').reset();
+        }
+      }).catch(error => console.error('Error:', error));
+    });
+  </script>
+</body>
+</html>
