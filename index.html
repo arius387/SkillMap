@@ -1,51 +1,25 @@
 <!DOCTYPE HTML>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>SkillMap</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
-  <link rel="shortcut icon" href="SkillMap_Logo.png" type="x-icon/image">
+  <link rel="shortcut icon" href="SkillMap_Logo.png" type="image/x-icon">
   <style>
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
-      z-index: 50;
-    }
-    .modal-content {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background-color: white;
-      padding: 20px;
-      border-radius: 8px;
-      width: 90%;
-      max-width: 500px;
-    }
-    .logo {
-      width: 50px;
-      height: 50px;
-      margin-right: 10px;
-      display: inline;
-    }
-    .header1 {
-      display: inline-block;
-      vertical-align: middle;
-    }
+    .modal { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background-color: rgba(0,0,0,0.5); z-index:50; }
+    .modal-content { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); background:white; padding:20px; border-radius:8px; width:90%; max-width:500px; }
+    .logo { width:50px; height:50px; margin-right:10px; display:inline; }
+    .header1 { display:inline-block; vertical-align:middle; }
   </style>
 </head>
 <body class="font-sans bg-gray-100">
   <div class="flex flex-col min-h-screen">
     <header class="bg-white p-4 shadow-md text-center">
-        <img src="./SkillMap_Logo.png" alt="SkillMap_Logo" class="logo"><h1 class="text-4xl font-bold text-blue-600 header1">SkillMap</h1>
-        <p class="text-lg text-gray-600 italic">Your Roadmap to Mastery</p>
+      <img src="SkillMap_Logo.png" alt="SkillMap_Logo" class="logo">
+      <h1 class="text-4xl font-bold text-blue-600 header1">SkillMap</h1>
+      <p class="text-lg text-gray-600 italic">Your Roadmap to Mastery</p>
     </header>
 
     <div class="flex flex-1">
@@ -63,7 +37,7 @@
         </div>
         <div class="mt-auto text-center text-gray-400">
           <span class="text-lg">SkillMap © 2025</span>
-          <div class="h-2"></div> <!-- Reduced spacer -->
+          <div class="h-2"></div>
           <span class="text-sm">All Rights Reserved</span>
         </div>
       </aside>
@@ -73,6 +47,7 @@
           <div class="mb-4">
             <textarea id="prompt" class="w-full p-2 border rounded" placeholder="Describe the skill(s) and roadmap you want..." rows="4"></textarea>
           </div>
+
           <div class="grid grid-cols-2 gap-4 mb-4">
             <select id="timeframe" class="p-2 border rounded">
               <option value="7 days">7 days</option>
@@ -82,27 +57,32 @@
               <option value="6 months">6 months</option>
               <option value="1 year">1 year</option>
             </select>
+
             <select id="skillLevel" class="p-2 border rounded">
               <option value="Beginner">Beginner</option>
               <option value="Intermediate">Intermediate</option>
               <option value="Advanced">Advanced</option>
               <option value="Zero to Hero">Zero to Hero</option>
             </select>
+
             <select id="resources" class="p-2 border rounded">
               <option value="Free">Free</option>
               <option value="YouTube">YouTube Only</option>
               <option value="Affordable">Affordable</option>
               <option value="Premium">Premium</option>
             </select>
+
             <select id="schedule" class="p-2 border rounded">
               <option value="Daily Tasks">Daily Tasks</option>
               <option value="Weekly Milestones">Weekly Milestones</option>
             </select>
+
             <select id="style" class="p-2 border rounded">
               <option value="Project-Based">Project-Based</option>
               <option value="Theory-Heavy">Theory-Heavy</option>
               <option value="Mixed">Mixed</option>
             </select>
+
             <select id="goals" class="p-2 border rounded">
               <option value="Job">Job</option>
               <option value="School">School</option>
@@ -113,11 +93,13 @@
               <option value="Other">Other</option>
             </select>
           </div>
+
           <button id="createRoadmapBtn" type="submit" class="bg-blue-600 text-white p-2 rounded hover:bg-blue-700 flex items-center justify-center">
             <i class='bx bx-rocket bx-sm mr-2'></i> Create Roadmap
           </button>
         </form>
 
+        <!-- about modal -->
         <div id="aboutModal" class="modal">
           <div class="modal-content">
             <div class="flex justify-end">
@@ -128,6 +110,7 @@
           </div>
         </div>
 
+        <!-- contact modal -->
         <div id="contactModal" class="modal">
           <div class="modal-content">
             <div class="flex justify-end">
@@ -142,11 +125,26 @@
             </form>
           </div>
         </div>
+
+        <!-- download modal -->
+        <div id="downloadModal" class="modal" aria-hidden="true">
+          <div class="modal-content">
+            <div class="flex justify-end">
+              <button id="closeDownloadModal" class="text-gray-500 hover:text-gray-700">&times;</button>
+            </div>
+            <h2 class="text-xl font-bold">Your Roadmap is Ready</h2>
+            <p class="mt-2">Click the link below to download your PDF:</p>
+            <a id="downloadLink" class="text-blue-600 break-words" href="#" target="_blank" rel="noopener">Download PDF</a>
+            <div class="mt-4 text-sm text-gray-600">Tip: the link is temporary—if you want a permanent copy, save it to your device.</div>
+          </div>
+        </div>
+
       </main>
     </div>
   </div>
 
   <script>
+    // UI modal handlers
     document.getElementById('newRoadmapBtn').addEventListener('click', () => {
       document.getElementById('roadmapForm').reset();
       window.location.reload();
@@ -167,39 +165,73 @@
       });
     });
 
+    // download modal close
+    document.getElementById('closeDownloadModal').addEventListener('click', () => {
+      document.getElementById('downloadModal').style.display = 'none';
+    });
+
     window.addEventListener('click', (e) => {
       if (e.target.classList.contains('modal')) {
         e.target.style.display = 'none';
       }
     });
 
-    document.getElementById('createRoadmapBtn').addEventListener('click', (e) => {
+    // MAIN: send variables to Make.com as structured JSON
+    document.getElementById('createRoadmapBtn').addEventListener('click', async (e) => {
       e.preventDefault();
-      const formData = {
-        prompt: document.getElementById('prompt').value,
+      const btn = e.currentTarget;
+      btn.disabled = true;
+      const originalText = btn.innerHTML;
+      btn.innerHTML = '<i class="bx bx-loader bx-spin mr-2"></i> Creating...';
+
+      // build the JSON payload with exact keys expected by your prompt/make scenario
+      const payload = {
+        description: document.getElementById('prompt').value.trim(),
         timeframe: document.getElementById('timeframe').value,
         skillLevel: document.getElementById('skillLevel').value,
         resources: document.getElementById('resources').value,
         schedule: document.getElementById('schedule').value,
         style: document.getElementById('style').value,
-        goals: document.getElementById('goals').value
+        goal: document.getElementById('goals').value
+        // optionally add userEmail here if you add an email input to the form
       };
-      fetch('https://hook.us2.make.com/r2v3q8qa5cnkcr0mwsoc557z3dnxfxqk', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
-      }).then(response => {
-        if (response.ok) {
-          document.getElementById('roadmapForm').reset();
+
+      try {
+        // <-- REPLACE THIS WITH YOUR ACTUAL MAKE.COM WEBHOOK URL -->
+        const MAKE_WEBHOOK = 'https://hook.us2.make.com/r2v3q8qa5cnkcr0mwsoc557z3dnxfxqk';
+
+        const response = await fetch(MAKE_WEBHOOK, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+
+        if (!response.ok) {
+          throw new Error('Network response was not OK: ' + response.status);
         }
-      }).catch(error => console.error('Error:', error));
+
+        // recommended: have your Make scenario return JSON { downloadUrl: '...' } when finished
+        const data = await response.json().catch(() => null);
+
+        // reset the form
+        document.getElementById('roadmapForm').reset();
+
+        if (data && data.downloadUrl) {
+          const linkEl = document.getElementById('downloadLink');
+          linkEl.href = data.downloadUrl;
+          document.getElementById('downloadModal').style.display = 'block';
+        } else {
+          // fallback: inform the user that the job was submitted and they'll get an email / link
+          alert('Roadmap submitted. You will receive an email or link when it is ready.');
+        }
+      } catch (err) {
+        console.error('Error:', err);
+        alert('There was an error creating the roadmap. Please try again later.');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = originalText;
+      }
     });
   </script>
 </body>
 </html>
-
-
-
-
-
-
