@@ -16,14 +16,25 @@
 </head>
 <body class="font-sans bg-gray-100">
   <div class="flex flex-col min-h-screen">
-    <header class="bg-white p-4 shadow-md text-center">
-      <img src="SkillMap_Logo.png" alt="SkillMap_Logo" class="logo">
-      <h1 class="text-4xl font-bold text-blue-600 header1">SkillMap</h1>
-      <p class="text-lg text-gray-600 italic">Your Roadmap to Mastery</p>
+
+    <!-- HEADER -->
+    <header class="bg-white p-4 shadow-md flex items-center justify-between">
+      <div class="flex items-center">
+        <!-- Hamburger icon (mobile only) -->
+        <button id="hamburgerBtn" class="lg:hidden mr-3 text-gray-700">
+          <i class='bx bx-menu bx-sm'></i>
+        </button>
+        <img src="SkillMap_Logo.png" alt="SkillMap_Logo" class="logo">
+        <div>
+          <h1 class="text-2xl font-bold text-blue-600">SkillMap</h1>
+          <p class="text-sm text-gray-600 italic">Your Roadmap to Mastery</p>
+        </div>
+      </div>
     </header>
 
     <div class="flex flex-1">
-      <aside class="w-64 bg-gray-800 text-white p-4 flex flex-col justify-between">
+      <!-- Desktop Sidebar -->
+      <aside class="hidden lg:flex w-64 bg-gray-800 text-white p-4 flex-col justify-between">
         <div>
           <button id="newRoadmapBtn" class="w-full text-left p-2 mb-2 bg-blue-600 hover:bg-blue-700 text-white rounded flex items-center">
             <i class='bx bx-plus bx-sm mr-2'></i> New Roadmap
@@ -42,13 +53,14 @@
         </div>
       </aside>
 
+      <!-- Main content -->
       <main class="flex-1 p-6">
         <form id="roadmapForm" class="bg-white p-6 rounded shadow-md">
           <div class="mb-4">
             <textarea id="prompt" class="w-full p-2 border rounded" placeholder="Describe the skill(s) and roadmap you want..." rows="4"></textarea>
           </div>
 
-          <div class="grid grid-cols-2 gap-4 mb-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
             <select id="timeframe" class="p-2 border rounded">
               <option value="7 days">7 days</option>
               <option value="1 month">1 month</option>
@@ -99,7 +111,7 @@
           </button>
         </form>
 
-        <!-- about modal -->
+        <!-- About Modal -->
         <div id="aboutModal" class="modal">
           <div class="modal-content">
             <div class="flex justify-end">
@@ -110,7 +122,7 @@
           </div>
         </div>
 
-        <!-- contact modal -->
+        <!-- Contact Modal -->
         <div id="contactModal" class="modal">
           <div class="modal-content">
             <div class="flex justify-end">
@@ -126,7 +138,7 @@
           </div>
         </div>
 
-        <!-- download modal -->
+        <!-- Download Modal -->
         <div id="downloadModal" class="modal" aria-hidden="true">
           <div class="modal-content">
             <div class="flex justify-end">
@@ -143,40 +155,99 @@
     </div>
   </div>
 
+  <!-- Mobile Sidebar Overlay -->
+  <div id="mobileSidebarOverlay" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+    <aside id="mobileSidebar" class="w-64 bg-gray-800 text-white p-4 flex flex-col justify-between h-full transform -translate-x-full transition-transform duration-300">
+      <div>
+        <button id="mobileNewRoadmapBtn" class="w-full text-left p-2 mb-2 bg-blue-600 hover:bg-blue-700 text-white rounded flex items-center">
+          <i class='bx bx-plus bx-sm mr-2'></i> New Roadmap
+        </button>
+        <button id="mobileAboutBtn" class="w-full text-left p-2 mb-2 hover:bg-gray-700 rounded flex items-center">
+          <i class='bx bx-info-circle bx-sm mr-2'></i> About
+        </button>
+        <button id="mobileContactBtn" class="w-full text-left p-2 hover:bg-gray-700 rounded flex items-center">
+          <i class='bx bx-envelope bx-sm mr-2'></i> Contact
+        </button>
+      </div>
+      <div class="mt-auto text-center text-gray-400">
+        <span class="text-lg">SkillMap © 2025</span>
+        <div class="h-2"></div>
+        <span class="text-sm">All Rights Reserved</span>
+      </div>
+    </aside>
+  </div>
+
   <script>
-    // UI modal handlers
+    // Sidebar toggle
+    const mobileOverlay = document.getElementById('mobileSidebarOverlay');
+    const mobileSidebar = document.getElementById('mobileSidebar');
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+
+    hamburgerBtn.addEventListener('click', () => {
+      mobileOverlay.classList.remove('hidden');
+      setTimeout(() => mobileSidebar.classList.remove('-translate-x-full'), 10);
+    });
+
+    // Close on backdrop click
+    mobileOverlay.addEventListener('click', (e) => {
+      if (e.target === mobileOverlay) {
+        closeMobileSidebar();
+      }
+    });
+
+    // Close on Esc key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !mobileOverlay.classList.contains('hidden')) {
+        closeMobileSidebar();
+      }
+    });
+
+    function closeMobileSidebar() {
+      mobileSidebar.classList.add('-translate-x-full');
+      setTimeout(() => mobileOverlay.classList.add('hidden'), 300);
+    }
+
+    // Duplicate buttons for mobile
+    document.getElementById('mobileNewRoadmapBtn').addEventListener('click', () => {
+      document.getElementById('roadmapForm').reset();
+      window.location.reload();
+    });
+    document.getElementById('mobileAboutBtn').addEventListener('click', () => {
+      closeMobileSidebar();
+      document.getElementById('aboutModal').style.display = 'block';
+    });
+    document.getElementById('mobileContactBtn').addEventListener('click', () => {
+      closeMobileSidebar();
+      document.getElementById('contactModal').style.display = 'block';
+    });
+
+    // Existing modal handlers
     document.getElementById('newRoadmapBtn').addEventListener('click', () => {
       document.getElementById('roadmapForm').reset();
       window.location.reload();
     });
-
     document.getElementById('aboutBtn').addEventListener('click', () => {
       document.getElementById('aboutModal').style.display = 'block';
     });
-
     document.getElementById('contactBtn').addEventListener('click', () => {
       document.getElementById('contactModal').style.display = 'block';
     });
-
     [document.getElementById('closeAboutModal'), document.getElementById('closeContactModal')].forEach(btn => {
       btn.addEventListener('click', () => {
         document.getElementById('aboutModal').style.display = 'none';
         document.getElementById('contactModal').style.display = 'none';
       });
     });
-
-    // download modal close
     document.getElementById('closeDownloadModal').addEventListener('click', () => {
       document.getElementById('downloadModal').style.display = 'none';
     });
-
     window.addEventListener('click', (e) => {
       if (e.target.classList.contains('modal')) {
         e.target.style.display = 'none';
       }
     });
 
-    // MAIN: send variables to Make.com as structured JSON
+    // MAIN: send variables to Make.com
     document.getElementById('createRoadmapBtn').addEventListener('click', async (e) => {
       e.preventDefault();
       const btn = e.currentTarget;
@@ -184,7 +255,6 @@
       const originalText = btn.innerHTML;
       btn.innerHTML = '<i class="bx bx-loader bx-spin mr-2"></i> Creating...';
 
-      // build the JSON payload with exact keys expected by your prompt/make scenario
       const payload = {
         description: document.getElementById('prompt').value.trim(),
         timeframe: document.getElementById('timeframe').value,
@@ -193,35 +263,23 @@
         schedule: document.getElementById('schedule').value,
         style: document.getElementById('style').value,
         goal: document.getElementById('goals').value
-        // optionally add userEmail here if you add an email input to the form
       };
 
       try {
-        // <-- REPLACE THIS WITH YOUR ACTUAL MAKE.COM WEBHOOK URL -->
         const MAKE_WEBHOOK = 'https://hook.us2.make.com/r2v3q8qa5cnkcr0mwsoc557z3dnxfxqk';
-
         const response = await fetch(MAKE_WEBHOOK, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload),
         });
-
-        if (!response.ok) {
-          throw new Error('Network response was not OK: ' + response.status);
-        }
-
-        // recommended: have your Make scenario return JSON { downloadUrl: '...' } when finished
+        if (!response.ok) throw new Error('Network response was not OK: ' + response.status);
         const data = await response.json().catch(() => null);
-
-        // reset the form
         document.getElementById('roadmapForm').reset();
-
         if (data && data.downloadUrl) {
           const linkEl = document.getElementById('downloadLink');
           linkEl.href = data.downloadUrl;
           document.getElementById('downloadModal').style.display = 'block';
         } else {
-          // fallback: inform the user that the job was submitted and they'll get an email / link
           alert('Roadmap submitted. You will receive an email or link when it is ready.');
         }
       } catch (err) {
